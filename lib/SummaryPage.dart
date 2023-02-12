@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'main.dart';
 import 'transaction.dart';
 import 'package:provider/provider.dart';
-import 'package:pie_chart/pie_chart.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class SummaryPage extends StatelessWidget {
   @override
