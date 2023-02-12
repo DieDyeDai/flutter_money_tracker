@@ -323,9 +323,6 @@ class _CalendarState extends State<CalendarPage> {
                                   categoryChosen!));
                               //appState.toUpdateSummary = true;
                               //appState.updateSummary();
-                              controllerName.clear();
-                              controllerCost.clear();
-                              controllerAmount.clear();
                               Navigator.pop(context, 'Update');
                             } else {
                               showDialog<void>(
