@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'main.dart';
 import 'transaction.dart';
 import 'package:provider/provider.dart';
-import 'package:pie_chart/pie_chart.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class SummaryPage extends StatefulWidget {
   @override
@@ -22,67 +22,84 @@ class _SummaryPageState extends State<SummaryPage> {
       );
     }
 
-    return Row(children: [
-      Expanded(
-          child: ListView(scrollDirection: Axis.vertical, children: [
-/*
-        for (var i in appState.transactions)
-          ListTile(
-            isThreeLine: true,
-            leading: const Icon(Icons.favorite),
-            title: Text('${i.name}'
-                ' x'
-                '${i.amount.toStringAsFixed(1)}'
-                ' on '
-                '${i.category}'),
-            subtitle: Text(i.cost.toStringAsFixed(2)),
-          ),
-          */
-        for (int i = 0; i < appState.transactions.length; i++)
-          Row(children: [
-            BigCard(
-              transaction: appState.transactions[i],
-              index: i,
-            ),
-            const SizedBox(width: 10),
-            ElevatedButton.icon(
-                onPressed: () => showDialog<void>(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext context) => AlertDialog(
-                          title: const Text('Delete transaction?'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'No'),
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                appState.removeTransaction(i);
-                                setState(() {});
-                                Navigator.pop(context, 'Yes');
-                              },
-                              child: const Text('Yes'),
-                            ),
-                          ],
-                        )),
-                icon: const Icon(Icons.delete),
-                label: const Text('Delete'))
-          ])
-      ])),
-      const SizedBox(width: 50),
-      Expanded(
-          child: ListView(scrollDirection: Axis.vertical, children: [
-        const Text('You spent:'),
-        for (var i in Transaction.categories)
-          Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text(
-                  '${MyAppState.getSum(MyAppState.getTransactionsFromCategory(i, appState.transactions)).toStringAsFixed(2)}'
-                  ' on '
-                  '$i'))
-      ]))
-    ]);
+    return Column(
+      children: [
+        const Spacer(flex: 1),
+        Expanded(
+          flex: 10,
+          child: Row(children: [
+            Expanded(
+                child: ListView(scrollDirection: Axis.vertical, children: [
+              /*
+              for (var i in appState.transactions)
+                ListTile(
+                  isThreeLine: true,
+                  leading: const Icon(Icons.favorite),
+                  title: Text('${i.name}'
+                      ' x'
+                      '${i.amount.toStringAsFixed(1)}'
+                      ' on '
+                      '${i.category}'),
+                  subtitle: Text(i.cost.toStringAsFixed(2)),
+                ),
+                */
+              for (int i = 0; i < appState.transactions.length; i++)
+                Row(children: [
+                  BigCard(
+                    transaction: appState.transactions[i],
+                    index: i,
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton.icon(
+                      onPressed: () => showDialog<void>(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Delete transaction?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'No'),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      appState.removeTransaction(i);
+                                      setState(() {});
+                                      Navigator.pop(context, 'Yes');
+                                    },
+                                    child: const Text('Yes'),
+                                  ),
+                                ],
+                              )),
+                      icon: const Icon(Icons.delete),
+                      label: const Text('Delete'))
+                ])
+            ])),
+            const SizedBox(width: 50),
+            Expanded(
+                child: ListView(scrollDirection: Axis.vertical, children: [
+              const Text('You spent:'),
+              for (var i in Transaction.categories)
+                Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Text(
+                        '${MyAppState.getSum(MyAppState.getTransactionsFromCategory(i, appState.transactions)).toStringAsFixed(2)}'
+                        ' on '
+                        '$i'))
+            ]))
+          ]),
+        ),
+        Expanded(
+            flex: 10,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Expanded(child: Center(child: TrnsPieChart())),
+                  Expanded(child: Center(child: TransLineChart())),
+                ]))
+      ],
+    );
   }
 }
 
