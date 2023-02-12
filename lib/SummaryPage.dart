@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_money_tracker/pie.dart';
 import 'main.dart';
 import 'transaction.dart';
 import 'package:provider/provider.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 class SummaryPage extends StatelessWidget {
   @override
@@ -15,35 +15,39 @@ class SummaryPage extends StatelessWidget {
       );
     }
 
-    return Row(children: [
+    return Column(children: [
       Expanded(
-          child: ListView(scrollDirection: Axis.vertical, children: [
-        /*Padding(
+          child: Row(children: [
+        Expanded(
+            child: ListView(scrollDirection: Axis.vertical, children: [
+          /*Padding(
             padding: const EdgeInsets.all(20.0),
             child: Text(
                 'You have ' '${appState.transactions.length}' ' transactions')),*/
-        for (var i in appState.transactions)
-          ListTile(
-            isThreeLine: true,
-            leading: const Icon(Icons.favorite),
-            title: Text('${i.name}'
-                ' x'
-                '${i.amount.toStringAsFixed(1)}'
-                ' on '
-                '${i.category}'),
-            subtitle: Text(i.cost.toStringAsFixed(2)),
-          ),
-      ])),
-      Expanded(
-          child: ListView(scrollDirection: Axis.vertical, children: [
-        for (var i in Transaction.categories)
-          Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text('You spent '
-                  '${MyAppState.getSum(MyAppState.getTransactionsFromCategory(i, appState.transactions)).toStringAsFixed(2)}'
+          for (var i in appState.transactions)
+            ListTile(
+              isThreeLine: true,
+              leading: const Icon(Icons.favorite),
+              title: Text('${i.name}'
+                  ' x'
+                  '${i.amount.toStringAsFixed(1)}'
                   ' on '
-                  '$i'))
-      ]))
+                  '${i.category}'),
+              subtitle: Text(i.cost.toStringAsFixed(2)),
+            ),
+        ])),
+        Expanded(
+            child: ListView(scrollDirection: Axis.vertical, children: [
+          for (var i in Transaction.categories)
+            Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Text('You spent '
+                    '${MyAppState.getSum(MyAppState.getTransactionsFromCategory(i, appState.transactions)).toStringAsFixed(2)}'
+                    ' on'
+                    '$i'))
+        ])),
+      ])),
+      const Expanded(child: TransPieChart())
     ]);
   }
 }
