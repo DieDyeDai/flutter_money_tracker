@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'main.dart';
+import 'indicator.dart';
 import 'transaction.dart';
 
 class TransPieChart extends StatefulWidget {
@@ -54,42 +55,68 @@ class PieChart2State extends State {
               ),
             ),
           ),
+          const SizedBox(
+            height: 18,
+          ),
           Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const <Widget>[
-              /*  Indicator(
-                color: Theme.of(context),
-                text: 'First',
+              Indicator(
+                color: Colors.blue,
+                text: 'Food',
                 isSquare: true,
               ),
               SizedBox(
                 height: 4,
               ),
               Indicator(
-                color: AppColors.contentColorYellow,
-                text: 'Second',
+                color: Colors.yellow,
+                text: 'Transportation',
                 isSquare: true,
               ),
               SizedBox(
                 height: 4,
               ),
               Indicator(
-                color: AppColors.contentColorPurple,
-                text: 'Third',
+                color: Colors.purple,
+                text: 'Education',
                 isSquare: true,
               ),
               SizedBox(
                 height: 4,
               ),
               Indicator(
-                color: AppColors.contentColorGreen,
-                text: 'Fourth',
+                color: Colors.green,
+                text: 'Entertainment',
                 isSquare: true,
               ),
-              */
               SizedBox(
-                height: 18,
+                height: 4,
+              ),
+              Indicator(
+                color: Colors.yellow,
+                text: 'Home',
+                isSquare: true,
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Indicator(
+                color: Colors.yellow,
+                text: 'Clothes',
+                isSquare: true,
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Indicator(
+                color: Colors.yellow,
+                text: 'Other',
+                isSquare: true,
+              ),
+              SizedBox(
+                height: 4,
               ),
             ],
           ),
@@ -113,7 +140,9 @@ class PieChart2State extends State {
             color: Colors.blue,
             value: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
                 Transaction.categories[0], appState.transactions)),
-            title: Transaction.categories[0],
+            title: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
+                    Transaction.categories[0], appState.transactions))
+                .toStringAsFixed(2),
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -127,7 +156,9 @@ class PieChart2State extends State {
             color: Colors.yellow,
             value: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
                 Transaction.categories[1], appState.transactions)),
-            title: Transaction.categories[1],
+            title: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
+                    Transaction.categories[1], appState.transactions))
+                .toStringAsFixed(2),
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -141,7 +172,9 @@ class PieChart2State extends State {
             color: Colors.purple,
             value: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
                 Transaction.categories[2], appState.transactions)),
-            title: Transaction.categories[2],
+            title: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
+                    Transaction.categories[2], appState.transactions))
+                .toStringAsFixed(2),
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -155,7 +188,9 @@ class PieChart2State extends State {
             color: Colors.green,
             value: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
                 Transaction.categories[3], appState.transactions)),
-            title: Transaction.categories[3],
+            title: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
+                    Transaction.categories[3], appState.transactions))
+                .toStringAsFixed(2),
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -169,7 +204,9 @@ class PieChart2State extends State {
             color: Colors.green,
             value: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
                 Transaction.categories[4], appState.transactions)),
-            title: Transaction.categories[4],
+            title: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
+                    Transaction.categories[4], appState.transactions))
+                .toStringAsFixed(2),
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -183,7 +220,9 @@ class PieChart2State extends State {
             color: Colors.green,
             value: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
                 Transaction.categories[5], appState.transactions)),
-            title: Transaction.categories[5],
+            title: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
+                    Transaction.categories[5], appState.transactions))
+                .toStringAsFixed(2),
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -198,7 +237,9 @@ class PieChart2State extends State {
             color: Colors.green,
             value: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
                 Transaction.categories[6], appState.transactions)),
-            title: Transaction.categories[6],
+            title: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
+                    Transaction.categories[6], appState.transactions))
+                .toStringAsFixed(2),
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
