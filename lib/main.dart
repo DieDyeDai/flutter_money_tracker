@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'SummaryPage.dart';
 import 'transaction.dart';
 import 'FormPage.dart';
+import 'CalendarPage.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -100,6 +101,9 @@ class _MyHomePageState extends State<MyHomePage> {
       case 1:
         page = SummaryPage();
         break;
+      case 2:
+        page = CalendarPage();
+        break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -120,8 +124,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     label: Text('Home'),
                   ),
                   NavigationRailDestination(
-                    icon: Icon(Icons.favorite),
-                    label: Text('Favorites'),
+                    icon: Icon(Icons.money),
+                    label: Text('Summary'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.calendar_month),
+                    label: Text('Calendar'),
                   ),
                 ],
                 selectedIndex: selectedIndex,

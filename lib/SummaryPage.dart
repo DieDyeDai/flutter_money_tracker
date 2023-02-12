@@ -31,7 +31,7 @@ class SummaryPage extends StatelessWidget {
               for (var i in appState.transactions)
                 ListTile(
                   isThreeLine: true,
-                  leading: const Icon(Icons.favorite),
+                  leading: const Icon(Icons.money),
                   title: Text('${i.name}'
                       ' x'
                       '${i.amount.toStringAsFixed(1)}'
@@ -48,7 +48,7 @@ class SummaryPage extends StatelessWidget {
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
                         textAlign: TextAlign.center,
-                        'You spent '
+                        'You spent \$'
                         '${MyAppState.getSum(MyAppState.getTransactionsFromCategory(i, appState.transactions)).toStringAsFixed(2)}'
                         ' on '
                         '$i',
