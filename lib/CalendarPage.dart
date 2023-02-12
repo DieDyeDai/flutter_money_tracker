@@ -168,7 +168,7 @@ class _CalendarState extends State<CalendarPage> {
                   textAlign: TextAlign.center,
                 ),
                 for (int i = 0;
-                    i < appState.transactions.length &&
+                    (i < appState.transactions.length) &&
                         (DateUtils.isSameDay(
                             appState.transactions[i].date, _selectedDay));
                     i++)
@@ -321,8 +321,8 @@ class _CalendarState extends State<CalendarPage> {
                                   double.parse(controllerAmount.text),
                                   _selectedDay!,
                                   categoryChosen!));
-                              appState.toUpdateSummary = true;
-                              appState.updateSummary();
+                              //appState.toUpdateSummary = true;
+                              //appState.updateSummary();
                               Navigator.pop(context, 'Update');
                             } else {
                               showDialog<void>(
