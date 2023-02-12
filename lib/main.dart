@@ -55,7 +55,7 @@ class MyAppState extends ChangeNotifier {
       DateTime datetime, List<Transaction> transactionsToCheck) {
     List<Transaction> transactionsAtDate = <Transaction>[];
     for (var i in transactionsToCheck) {
-      if (i.date == datetime) {
+      if (i.date.difference(datetime).inDays == 0) {
         transactionsAtDate.add(i);
       }
     }
