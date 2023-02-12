@@ -167,42 +167,40 @@ class _CalendarState extends State<CalendarPage> {
                   'Click on a transaction to edit',
                   textAlign: TextAlign.center,
                 ),
-                for (int i = 0;
-                    (i < appState.transactions.length) &&
-                        (DateUtils.isSameDay(
-                            appState.transactions[i].date, _selectedDay));
-                    i++)
-                  Row(children: [
-                    BigCard(
-                      transaction: appState.transactions[i],
-                      index: i,
-                    ),
-                    const SizedBox(width: 10),
-                    ElevatedButton.icon(
-                        onPressed: () => showDialog<void>(
-                            context: context,
-                            barrierDismissible: true,
-                            builder: (BuildContext context) => AlertDialog(
-                                  title: const Text('Delete transaction?'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'No'),
-                                      child: const Text('Cancel'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        appState.removeTransaction(i);
-                                        setState(() {});
-                                        Navigator.pop(context, 'Yes');
-                                      },
-                                      child: const Text('Yes'),
-                                    ),
-                                  ],
-                                )),
-                        icon: const Icon(Icons.delete),
-                        label: const Text('Delete'))
-                  ])
+                for (int i = 0; (i < appState.transactions.length); i++)
+                  Row(
+                    children: [
+                      BigCard(
+                        transaction: appState.transactions[i],
+                        index: i,
+                      ),
+                      const SizedBox(width: 10),
+                      ElevatedButton.icon(
+                          onPressed: () => showDialog<void>(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (BuildContext context) => AlertDialog(
+                                    title: const Text('Delete transaction?'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'No'),
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          appState.removeTransaction(i);
+                                          setState(() {});
+                                          Navigator.pop(context, 'Yes');
+                                        },
+                                        child: const Text('Yes'),
+                                      ),
+                                    ],
+                                  )),
+                          icon: const Icon(Icons.delete),
+                          label: const Text('Delete')),
+                    ],
+                  )
               ])),
             ]),
           ),
@@ -320,7 +318,7 @@ class _CalendarState extends State<CalendarPage> {
                                   double.parse(controllerCost.text),
                                   double.parse(controllerAmount.text),
                                   _selectedDay!,
-                                  categoryChosen!));
+                                  categoryChosen));
                               //appState.toUpdateSummary = true;
                               //appState.updateSummary();
                               Navigator.pop(context, 'Update');

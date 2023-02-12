@@ -39,11 +39,19 @@ class MyAppState extends ChangeNotifier {
   ];
 
   bool toUpdateSummary = false;
+  bool toUpdateCalendar = false;
 
   void updateSummary() {
     if (toUpdateSummary) {
       notifyListeners();
       toUpdateSummary = false;
+    }
+  }
+
+  void updateCalendar() {
+    if (toUpdateCalendar) {
+      notifyListeners();
+      toUpdateCalendar = false;
     }
   }
 
