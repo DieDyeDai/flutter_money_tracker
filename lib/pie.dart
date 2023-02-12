@@ -95,7 +95,7 @@ class PieChart2State extends State {
                 height: 4,
               ),
               Indicator(
-                color: Colors.yellow,
+                color: Colors.orange,
                 text: 'Home',
                 isSquare: true,
               ),
@@ -103,7 +103,7 @@ class PieChart2State extends State {
                 height: 4,
               ),
               Indicator(
-                color: Colors.yellow,
+                color: Colors.cyan,
                 text: 'Clothes',
                 isSquare: true,
               ),
@@ -111,7 +111,7 @@ class PieChart2State extends State {
                 height: 4,
               ),
               Indicator(
-                color: Colors.yellow,
+                color: Colors.pink,
                 text: 'Other',
                 isSquare: true,
               ),
@@ -201,7 +201,7 @@ class PieChart2State extends State {
           );
         case 4:
           return PieChartSectionData(
-            color: Colors.green,
+            color: Colors.orange,
             value: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
                 Transaction.categories[4], appState.transactions)),
             title: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
@@ -211,13 +211,13 @@ class PieChart2State extends State {
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Colors.greenAccent,
+              color: Colors.orangeAccent,
               shadows: shadows,
             ),
           );
         case 5:
           return PieChartSectionData(
-            color: Colors.green,
+            color: Colors.cyan,
             value: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
                 Transaction.categories[5], appState.transactions)),
             title: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
@@ -227,14 +227,14 @@ class PieChart2State extends State {
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Colors.greenAccent,
+              color: Colors.cyanAccent,
               shadows: shadows,
             ),
           );
 
         case 6:
           return PieChartSectionData(
-            color: Colors.green,
+            color: Colors.pink,
             value: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
                 Transaction.categories[6], appState.transactions)),
             title: MyAppState.getSum(MyAppState.getTransactionsFromCategory(
@@ -244,7 +244,7 @@ class PieChart2State extends State {
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Colors.greenAccent,
+              color: Colors.pinkAccent,
               shadows: shadows,
             ),
           );
