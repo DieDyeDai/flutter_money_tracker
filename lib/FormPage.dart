@@ -141,7 +141,8 @@ class _FormPageState extends State<FormPage> {
                           _selectedDate == null
                               ? DateTime.now()
                               : _selectedDate!,
-                          categoryChosen!));
+                          categoryChosen!,
+                          appState.transactions.length));
                       // dispose();
                     } else {
                       showDialog<void>(

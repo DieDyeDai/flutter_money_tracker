@@ -35,7 +35,7 @@ class MyAppState extends ChangeNotifier {
   // MyAppState defines app's "state". Here it uses ChangeNotifier
   // ChangeNotifier allows it to notify other widgets about its own changes
   List<Transaction> transactions = <Transaction>[
-    Transaction('test', 2.00, 2, DateTime.now(), 'food')
+    Transaction('test', 2.00, 2, DateTime.now(), 'food', 0)
   ];
 
   bool toUpdateSummary = false;
@@ -58,12 +58,11 @@ class MyAppState extends ChangeNotifier {
   var now = DateTime.now();
 
   void addTransaction(Transaction transaction) {
-    transactions.add(transaction);
+    transactions.insert(transactions.length, transaction);
   }
 
   void editTransaction(int i, Transaction transaction) {
-    transactions.removeAt(i);
-    transactions.insert(i, transaction);
+    transactions[i] = transaction;
   }
 
   void removeTransaction(int i) {

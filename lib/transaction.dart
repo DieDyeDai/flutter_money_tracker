@@ -14,6 +14,7 @@ class Transaction {
   double amount;
   DateTime date;
   String category;
+  int index;
 
   Transaction(
     this.name,
@@ -21,5 +22,6 @@ class Transaction {
     this.amount,
     this.date,
     this.category,
+    this.index,
   );
 }

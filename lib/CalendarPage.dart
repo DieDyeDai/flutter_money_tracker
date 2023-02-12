@@ -39,6 +39,8 @@ class _CalendarState extends State<CalendarPage> {
     DropdownMenuItem(value: 'other', child: Text(" Other")),
   ];
 
+  final transactionDisplay = <Widget>[];
+
   @override
   void initState() {
     super.initState();
@@ -47,10 +49,11 @@ class _CalendarState extends State<CalendarPage> {
     //_selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
 
-  var appState;
+  // var appState;
+
   @override
   Widget build(BuildContext context) {
-    appState = context.watch<MyAppState>();
+    var appState = context.watch<MyAppState>();
 
     var theme = Theme.of(context);
 
@@ -167,12 +170,24 @@ class _CalendarState extends State<CalendarPage> {
                   'Click on a transaction to edit',
                   textAlign: TextAlign.center,
                 ),
-                for (int i = 0; (i < appState.transactions.length); i++)
+                for (int i = 0;
+                    (i <
+                        MyAppState.getTransactionsFromDate(
+                                _selectedDay!, appState.transactions)
+                            .length);
+                    i++)
+                  //if (DateUtils.isSameDay(
+                  //          appState.transactions[i].date, _focusedDay)) {
+
+                  //  }
                   Row(
                     children: [
                       BigCard(
-                        transaction: appState.transactions[i],
-                        index: i,
+                        transaction: MyAppState.getTransactionsFromDate(
+                            _selectedDay!, appState.transactions)[i],
+                        index: MyAppState.getTransactionsFromDate(
+                                _selectedDay!, appState.transactions)[i]
+                            .index,
                       ),
                       const SizedBox(width: 10),
                       ElevatedButton.icon(
@@ -189,7 +204,11 @@ class _CalendarState extends State<CalendarPage> {
                                       ),
                                       TextButton(
                                         onPressed: () {
-                                          appState.removeTransaction(i);
+                                          appState.removeTransaction(MyAppState
+                                                  .getTransactionsFromDate(
+                                                      _selectedDay!,
+                                                      appState.transactions)[i]
+                                              .index);
                                           setState(() {});
                                           Navigator.pop(context, 'Yes');
                                         },
@@ -318,9 +337,13 @@ class _CalendarState extends State<CalendarPage> {
                                   double.parse(controllerCost.text),
                                   double.parse(controllerAmount.text),
                                   _selectedDay!,
-                                  categoryChosen));
+                                  categoryChosen,
+                                  appState.transactions.length));
                               //appState.toUpdateSummary = true;
                               //appState.updateSummary();
+                              categoryChosen = ' ';
+                              appState.toUpdateCalendar = true;
+                              appState.updateCalendar();
                               Navigator.pop(context, 'Update');
                             } else {
                               showDialog<void>(
@@ -347,11 +370,13 @@ class _CalendarState extends State<CalendarPage> {
             },
             icon: const Icon(Icons.add),
             label: const Text('Add'),
-          )
+          ),
+          const Spacer(flex: 10),
         ]));
   }
 
   List<Event> _getEventsForDay(DateTime day) {
+    var appState = context.watch<MyAppState>();
     return parseTransactionsAsEvents(
         MyAppState.getTransactionsFromDate(day, appState.transactions));
   }

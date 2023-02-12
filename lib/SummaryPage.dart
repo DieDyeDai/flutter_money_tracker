@@ -334,7 +334,8 @@ class _BigCardState extends State<BigCard> {
                                 double.parse(controllerCost.text),
                                 double.parse(controllerAmount.text),
                                 _selectedDate,
-                                categoryChosen));
+                                categoryChosen,
+                                appState.transactions.length));
                         appState.toUpdateSummary = true;
                         appState.updateSummary();
                         Navigator.pop(context, 'Update');
