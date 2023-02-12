@@ -18,10 +18,11 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
-        title: 'Namer App',
+        title: 'Spending Tracker',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: Color.fromARGB(255, 141, 219, 255)),
         ),
         home: MyHomePage(),
       ),
@@ -35,6 +36,15 @@ class MyAppState extends ChangeNotifier {
   List<Transaction> transactions = <Transaction>[
     Transaction('test', 2.00, 2, DateTime.now(), 'food')
   ];
+
+  bool toUpdateSummary = false;
+
+  void updateSummary() {
+    if (toUpdateSummary) {
+      notifyListeners();
+      toUpdateSummary = false;
+    }
+  }
 
   var now = DateTime.now();
 
@@ -143,36 +153,5 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     });
-  }
-}
-
-class BigCard extends StatelessWidget {
-  const BigCard({
-    super.key,
-    required this.text,
-  });
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-
-    var style = theme.textTheme.displayMedium!.copyWith(
-      color: theme.colorScheme.onPrimary,
-    );
-
-    return Card(
-      color: theme.colorScheme.primary,
-      elevation: 50,
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Text(
-          text.toLowerCase(),
-          style: style,
-          semanticsLabel: text,
-        ),
-      ),
-    );
   }
 }

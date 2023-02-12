@@ -27,18 +27,27 @@ class _FormPageState extends State<FormPage> {
     final controllerAmount = TextEditingController();
 
     List<DropdownMenuItem> categories = [
-      const DropdownMenuItem(value: 'food', child: Text("Food")),
+      const DropdownMenuItem(value: 'food', child: Text(" Food")),
       const DropdownMenuItem(
           value: 'transportation', child: Text("Transportation")),
-      const DropdownMenuItem(value: 'education', child: Text("Education")),
+      const DropdownMenuItem(value: 'education', child: Text(" Education")),
       const DropdownMenuItem(
           value: 'entertainment', child: Text("Entertainment")),
-      const DropdownMenuItem(value: 'home', child: Text("Home")),
-      const DropdownMenuItem(value: 'clothes', child: Text("Clothes")),
-      const DropdownMenuItem(value: 'other', child: Text("Other")),
+      const DropdownMenuItem(value: 'home', child: Text(" Home")),
+      const DropdownMenuItem(value: 'clothes', child: Text(" Clothes")),
+      const DropdownMenuItem(value: 'other', child: Text(" Other")),
     ];
 
     String? categoryChosen;
+
+    /*
+    @override
+    void dispose() {
+      controllerName.dispose();
+      controllerCost.dispose();
+      controllerAmount.dispose();
+    }
+    */
 
     return Form(
         key: _formKey,
@@ -49,11 +58,11 @@ class _FormPageState extends State<FormPage> {
                 controller: controllerName,
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
-                  labelText: 'Enter name',
+                  labelText: ' Enter name',
                 ),
                 validator: (value) {
                   if (value == null || value.runtimeType != String) {
-                    return 'Must enter a name';
+                    return ' Must enter a name';
                   }
                   return null;
                 }),
@@ -66,12 +75,12 @@ class _FormPageState extends State<FormPage> {
                 ],
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
-                  labelText: 'Enter cost',
+                  labelText: ' Enter cost',
                 ),
                 validator: (value) {
                   //if (value == null || (value.runtimeType != double && value.runtimeType != int))
                   if (value == null) {
-                    return 'Must enter a cost';
+                    return ' Must enter a cost';
                   }
                   return null;
                 }),
@@ -80,21 +89,22 @@ class _FormPageState extends State<FormPage> {
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: false),
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                //initialValue: 1,
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
-                  labelText: 'Enter amount',
+                  labelText: ' Enter amount',
                 ),
                 validator: (value) {
                   //if (value == null || (value.runtimeType != double && value.runtimeType != int)) {
                   if (value == null) {
-                    return 'Must enter an amount';
+                    return ' Must enter an amount';
                   }
                   return null;
                 }),
             DropdownButtonFormField(
                 value: null,
                 items: categories,
-                hint: Text('Categories'),
+                hint: const Text(' Categories'),
                 onChanged: (value) {
                   categoryChosen = value;
                 }),
@@ -128,8 +138,25 @@ class _FormPageState extends State<FormPage> {
                           controllerName.text,
                           double.parse(controllerCost.text),
                           double.parse(controllerAmount.text),
-                          _selectedDate!,
+                          _selectedDate == null
+                              ? DateTime.now()
+                              : _selectedDate!,
                           categoryChosen!));
+                      // dispose();
+                    } else {
+                      showDialog<void>(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Missing fields'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'OK'),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ));
                     }
                   },
                   child: const Text('Add transaction'),
