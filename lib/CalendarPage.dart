@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_money_tracker/main.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'SummaryPage.dart';
 import 'transaction.dart';
 import 'main.dart';
 import 'util.dart';
@@ -31,6 +31,23 @@ class _CalendarState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     appState = context.watch<MyAppState>();
+
+    var theme = Theme.of(context);
+
+    var style = theme.textTheme.titleMedium!.copyWith(
+      color: theme.colorScheme.onPrimary,
+    );
+    var styleBigger = theme.textTheme.titleLarge!.copyWith(
+      color: theme.colorScheme.onPrimary,
+    );
+    var styleSmaller = theme.textTheme.titleSmall!.copyWith(
+      color: theme.colorScheme.onPrimary,
+    );
+
+    final TextEditingController controllerName;
+    final TextEditingController controllerCost;
+    final TextEditingController controllerAmount;
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Transaction Calendar'),
@@ -98,6 +115,232 @@ class _CalendarState extends State<CalendarPage> {
               },
             ),
           )*/
+
+          Expanded(
+            flex: 10,
+            child: Row(children: [
+              Expanded(
+                  child: ListView(scrollDirection: Axis.vertical, children: [
+                /*
+                for (var i in appState.transactions)
+                  ListTile(
+                    isThreeLine: true,
+                    leading: const Icon(Icons.favorite),
+                    title: Text('${i.name}'
+                        ' x'
+                        '${i.amount.toStringAsFixed(1)}'
+                        ' on '
+                        '${i.category}'),
+                    subtitle: Text(i.cost.toStringAsFixed(2)),
+                  ),
+                  */
+
+                const Text(
+                  'Click on a transaction to edit',
+                  textAlign: TextAlign.center,
+                ),
+                for (int i = 0; i < appState.transactions.length; i++)
+                  Row(children: [
+                    BigCard(
+                      transaction: appState.transactions[i],
+                      index: i,
+                    ),
+                    const SizedBox(width: 10),
+                    ElevatedButton.icon(
+                        onPressed: () => showDialog<void>(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Delete transaction?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'No'),
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        appState.removeTransaction(i);
+                                        setState(() {});
+                                        Navigator.pop(context, 'Yes');
+                                      },
+                                      child: const Text('Yes'),
+                                    ),
+                                  ],
+                                )),
+                        icon: const Icon(Icons.delete),
+                        label: const Text('Delete'))
+                  ])
+              ])),
+            ]),
+          ),
+          ElevatedButton.icon(
+              onPressed: () => {
+
+        // DateTime _selectedDate = widget.transaction.date;
+        // var appState = context.read<MyAppState>();
+        // var summaryPageState = context.read<SummaryPage>();
+
+        final controllerName = TextEditingController();
+        final controllerCost = TextEditingController();
+        final controllerAmount = TextEditingController();
+
+        void disposeAndExit() {
+          controllerName.dispose();
+          controllerCost.dispose();
+          controllerAmount.dispose();
+          Navigator.pop(context);
+        }
+
+        List<DropdownMenuItem> categories = [
+          const DropdownMenuItem(value: 'food', child: Text(" Food")),
+          const DropdownMenuItem(
+              value: 'transportation', child: Text("Transportation")),
+          const DropdownMenuItem(value: 'education', child: Text(" Education")),
+          const DropdownMenuItem(
+              value: 'entertainment', child: Text("Entertainment")),
+          const DropdownMenuItem(value: 'home', child: Text(" Home")),
+          const DropdownMenuItem(value: 'clothes', child: Text(" Clothes")),
+          const DropdownMenuItem(value: 'other', child: Text(" Other")),
+        ];
+
+        String categoryChosen = widget.transaction.category;
+                    showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Edit transaction"),
+                content: Stack(children: [
+                  Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          TextFormField(
+                              controller: controllerName,
+                              decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                labelText: ' Enter name',
+                              ),
+                              validator: (value) {
+                                if (value == null ||
+                                    value.runtimeType != String) {
+                                  return ' Must enter a name';
+                                }
+                                return null;
+                              }),
+                          TextFormField(
+                              controller: controllerCost,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    (RegExp("[.0-9]")))
+                              ],
+                              decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                labelText: ' Enter cost',
+                              ),
+                              validator: (value) {
+                                //if (value == null || (value.runtimeType != double && value.runtimeType != int))
+                                if (value == null) {
+                                  return ' Must enter a cost';
+                                }
+                                return null;
+                              }),
+                          TextFormField(
+                              controller: controllerAmount,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: false),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              //initialValue: 1,
+                              decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                labelText: ' Enter amount',
+                              ),
+                              validator: (value) {
+                                //if (value == null || (value.runtimeType != double && value.runtimeType != int)) {
+                                if (value == null) {
+                                  return ' Must enter an amount';
+                                }
+                                return null;
+                              }),
+                          DropdownButtonFormField(
+                              value: null,
+                              items: categories,
+                              hint: const Text(' Categories'),
+                              onChanged: (value) {
+                                categoryChosen = value;
+                              }),
+                          TextButton(
+                              onPressed: () {
+                                showDatePicker(
+                                  context: context,
+                                  initialDate: _selectedDate,
+                                  firstDate: DateTime(2010),
+                                  lastDate: DateTime(2030),
+                                ).then((chosenDate) {
+                                  if (chosenDate == null) {
+                                    return _selectedDate;
+                                  }
+
+                                  _selectedDate = chosenDate;
+                                });
+                              },
+                              child: Text(
+                                  DateFormat.MMMd().format(_selectedDate!))),
+                        ],
+                      )),
+                ]),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'No'),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        appState.editTransaction(
+                            widget.index,
+                            Transaction(
+                                controllerName.text,
+                                double.parse(controllerCost.text),
+                                double.parse(controllerAmount.text),
+                                _selectedDate,
+                                categoryChosen));
+                        appState.toUpdateSummary = true;
+                        appState.updateSummary();
+                        Navigator.pop(context, 'Update');
+                      } else {
+                        showDialog<void>(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Missing fields'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'OK'),
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                ));
+                      }
+                    },
+                    child: const Text('Add'),
+                  ),
+                ],
+              );
+            });},
+              icon: const Icon(Icons.add),
+              label: const Text('Delete'),
+  )
         ]));
   }
 

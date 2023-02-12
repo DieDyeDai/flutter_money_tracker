@@ -45,6 +45,11 @@ class _SummaryPageState extends State<SummaryPage> {
                   subtitle: Text(i.cost.toStringAsFixed(2)),
                 ),
                 */
+
+              const Text(
+                'Click on a transaction to edit',
+                textAlign: TextAlign.center,
+              ),
               for (int i = 0; i < appState.transactions.length; i++)
                 Row(children: [
                   BigCard(
