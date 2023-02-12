@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'SummaryPage.dart';
@@ -18,6 +20,24 @@ class _CalendarState extends State<CalendarPage> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+
+  String categoryChosen = ' ';
+
+  TextEditingController controllerName = TextEditingController();
+  TextEditingController controllerCost = TextEditingController();
+  TextEditingController controllerAmount = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
+  final List<DropdownMenuItem> categories = [
+    DropdownMenuItem(value: 'food', child: Text(" Food")),
+    DropdownMenuItem(value: 'transportation', child: Text("Transportation")),
+    DropdownMenuItem(value: 'education', child: Text(" Education")),
+    DropdownMenuItem(value: 'entertainment', child: Text("Entertainment")),
+    DropdownMenuItem(value: 'home', child: Text(" Home")),
+    DropdownMenuItem(value: 'clothes', child: Text(" Clothes")),
+    DropdownMenuItem(value: 'other', child: Text(" Other")),
+  ];
 
   @override
   void initState() {
@@ -44,9 +64,17 @@ class _CalendarState extends State<CalendarPage> {
       color: theme.colorScheme.onPrimary,
     );
 
-    final TextEditingController controllerName;
-    final TextEditingController controllerCost;
-    final TextEditingController controllerAmount;
+    //final TextEditingController controllerName;
+    //final TextEditingController controllerCost;
+    //final TextEditingController controllerAmount;
+
+    // String categoryChosen = '';
+
+    // final _formKey = GlobalKey<FormState>();
+
+    // TextEditingController controllerName = TextEditingController();
+    // TextEditingController controllerCost = TextEditingController();
+    // TextEditingController controllerAmount = TextEditingController();
 
     return Scaffold(
         appBar: AppBar(
@@ -139,7 +167,11 @@ class _CalendarState extends State<CalendarPage> {
                   'Click on a transaction to edit',
                   textAlign: TextAlign.center,
                 ),
-                for (int i = 0; i < appState.transactions.length; i++)
+                for (int i = 0;
+                    i < appState.transactions.length &&
+                        (DateUtils.isSameDay(
+                            appState.transactions[i].date, _selectedDay));
+                    i++)
                   Row(children: [
                     BigCard(
                       transaction: appState.transactions[i],
@@ -175,172 +207,149 @@ class _CalendarState extends State<CalendarPage> {
             ]),
           ),
           ElevatedButton.icon(
-              onPressed: () => {
+            onPressed: () => {
+              // DateTime _selectedDate = widget.transaction.date;
+              // var appState = context.read<MyAppState>();
+              // var summaryPageState = context.read<SummaryPage>();
 
-        // DateTime _selectedDate = widget.transaction.date;
-        // var appState = context.read<MyAppState>();
-        // var summaryPageState = context.read<SummaryPage>();
-
-        final controllerName = TextEditingController();
-        final controllerCost = TextEditingController();
-        final controllerAmount = TextEditingController();
-
-        void disposeAndExit() {
-          controllerName.dispose();
-          controllerCost.dispose();
-          controllerAmount.dispose();
-          Navigator.pop(context);
-        }
-
-        List<DropdownMenuItem> categories = [
-          const DropdownMenuItem(value: 'food', child: Text(" Food")),
-          const DropdownMenuItem(
-              value: 'transportation', child: Text("Transportation")),
-          const DropdownMenuItem(value: 'education', child: Text(" Education")),
-          const DropdownMenuItem(
-              value: 'entertainment', child: Text("Entertainment")),
-          const DropdownMenuItem(value: 'home', child: Text(" Home")),
-          const DropdownMenuItem(value: 'clothes', child: Text(" Clothes")),
-          const DropdownMenuItem(value: 'other', child: Text(" Other")),
-        ];
-
-        String categoryChosen = widget.transaction.category;
-                    showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text("Edit transaction"),
-                content: Stack(children: [
-                  Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          TextFormField(
-                              controller: controllerName,
-                              decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                labelText: ' Enter name',
-                              ),
-                              validator: (value) {
-                                if (value == null ||
-                                    value.runtimeType != String) {
-                                  return ' Must enter a name';
-                                }
-                                return null;
-                              }),
-                          TextFormField(
-                              controller: controllerCost,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      decimal: true),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    (RegExp("[.0-9]")))
-                              ],
-                              decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                labelText: ' Enter cost',
-                              ),
-                              validator: (value) {
-                                //if (value == null || (value.runtimeType != double && value.runtimeType != int))
-                                if (value == null) {
-                                  return ' Must enter a cost';
-                                }
-                                return null;
-                              }),
-                          TextFormField(
-                              controller: controllerAmount,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      decimal: false),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              //initialValue: 1,
-                              decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                labelText: ' Enter amount',
-                              ),
-                              validator: (value) {
-                                //if (value == null || (value.runtimeType != double && value.runtimeType != int)) {
-                                if (value == null) {
-                                  return ' Must enter an amount';
-                                }
-                                return null;
-                              }),
-                          DropdownButtonFormField(
-                              value: null,
-                              items: categories,
-                              hint: const Text(' Categories'),
-                              onChanged: (value) {
-                                categoryChosen = value;
-                              }),
-                          TextButton(
-                              onPressed: () {
-                                showDatePicker(
-                                  context: context,
-                                  initialDate: _selectedDate,
-                                  firstDate: DateTime(2010),
-                                  lastDate: DateTime(2030),
-                                ).then((chosenDate) {
-                                  if (chosenDate == null) {
-                                    return _selectedDate;
-                                  }
-
-                                  _selectedDate = chosenDate;
-                                });
-                              },
-                              child: Text(
-                                  DateFormat.MMMd().format(_selectedDate!))),
-                        ],
-                      )),
-                ]),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, 'No'),
-                    child: const Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        appState.editTransaction(
-                            widget.index,
-                            Transaction(
-                                controllerName.text,
-                                double.parse(controllerCost.text),
-                                double.parse(controllerAmount.text),
-                                _selectedDate,
-                                categoryChosen));
-                        appState.toUpdateSummary = true;
-                        appState.updateSummary();
-                        Navigator.pop(context, 'Update');
-                      } else {
-                        showDialog<void>(
-                            context: context,
-                            barrierDismissible: true,
-                            builder: (BuildContext context) => AlertDialog(
-                                  title: const Text('Missing fields'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'OK'),
-                                      child: const Text('OK'),
+              showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Edit transaction"),
+                      content: Stack(children: [
+                        Form(
+                            key: _formKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                TextFormField(
+                                    controller: controllerName,
+                                    decoration: const InputDecoration(
+                                      border: UnderlineInputBorder(),
+                                      labelText: ' Enter name',
                                     ),
-                                  ],
-                                ));
-                      }
-                    },
-                    child: const Text('Add'),
-                  ),
-                ],
-              );
-            });},
-              icon: const Icon(Icons.add),
-              label: const Text('Delete'),
-  )
+                                    validator: (value) {
+                                      if (value == null ||
+                                          value.runtimeType != String) {
+                                        return ' Must enter a name';
+                                      }
+                                      return null;
+                                    }),
+                                TextFormField(
+                                    controller: controllerCost,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                            decimal: true),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          (RegExp("[.0-9]")))
+                                    ],
+                                    decoration: const InputDecoration(
+                                      border: UnderlineInputBorder(),
+                                      labelText: ' Enter cost',
+                                    ),
+                                    validator: (value) {
+                                      //if (value == null || (value.runtimeType != double && value.runtimeType != int))
+                                      if (value == null) {
+                                        return ' Must enter a cost';
+                                      }
+                                      return null;
+                                    }),
+                                TextFormField(
+                                    controller: controllerAmount,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                            decimal: false),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    //initialValue: 1,
+                                    decoration: const InputDecoration(
+                                      border: UnderlineInputBorder(),
+                                      labelText: ' Enter amount',
+                                    ),
+                                    validator: (value) {
+                                      //if (value == null || (value.runtimeType != double && value.runtimeType != int)) {
+                                      if (value == null) {
+                                        return ' Must enter an amount';
+                                      }
+                                      return null;
+                                    }),
+                                DropdownButtonFormField(
+                                    value: null,
+                                    items: categories,
+                                    hint: const Text(' Categories'),
+                                    onChanged: (value) {
+                                      categoryChosen = value;
+                                    }),
+                                TextButton(
+                                    onPressed: () {
+                                      showDatePicker(
+                                        context: context,
+                                        initialDate: _selectedDay!,
+                                        firstDate: DateTime(2010),
+                                        lastDate: DateTime(2030),
+                                      ).then((chosenDate) {
+                                        if (chosenDate == null) {
+                                          return _selectedDay;
+                                        }
+
+                                        _selectedDay = chosenDate;
+                                      });
+                                    },
+                                    child: Text(DateFormat.MMMd()
+                                        .format(_selectedDay!))),
+                              ],
+                            )),
+                      ]),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'No'),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate() &&
+                                Transaction.categories
+                                    .contains(categoryChosen)) {
+                              _formKey.currentState!.save();
+                              appState.addTransaction(Transaction(
+                                  controllerName.text,
+                                  double.parse(controllerCost.text),
+                                  double.parse(controllerAmount.text),
+                                  _selectedDay!,
+                                  categoryChosen!));
+                              appState.toUpdateSummary = true;
+                              appState.updateSummary();
+                              Navigator.pop(context, 'Update');
+                            } else {
+                              showDialog<void>(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                        title: const Text('Missing fields'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, 'OK'),
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ));
+                            }
+                          },
+                          child: const Text('Add'),
+                        ),
+                      ],
+                    );
+                  })
+            },
+            icon: const Icon(Icons.add),
+            label: const Text('Add'),
+          )
         ]));
   }
 
