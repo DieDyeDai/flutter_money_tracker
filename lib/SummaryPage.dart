@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'main.dart';
+import 'line.dart';
+import 'pie.dart';
 import 'transaction.dart';
 import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -95,7 +97,7 @@ class _SummaryPageState extends State<SummaryPage> {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
-                  Expanded(child: Center(child: TrnsPieChart())),
+                  Expanded(child: Center(child: TransPieChart())),
                   Expanded(child: Center(child: TransLineChart())),
                 ]))
       ],
