@@ -24,7 +24,7 @@ class _CalendarState extends State<CalendarPage> {
     super.initState();
 
     _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+    //_selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
 
   var appState;
@@ -72,7 +72,7 @@ class _CalendarState extends State<CalendarPage> {
               return _getEventsForDay(day);
             },
           ),
-          Expanded(
+          /*Expanded(
             child: ValueListenableBuilder<List<Event>>(
               valueListenable: _selectedEvents,
               builder: (context, value, _) {
@@ -97,7 +97,7 @@ class _CalendarState extends State<CalendarPage> {
                 );
               },
             ),
-          )
+          )*/
         ]));
   }
 
